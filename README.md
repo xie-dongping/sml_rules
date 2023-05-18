@@ -20,7 +20,7 @@ Please refer to the source code for exact implementation.
 
 These rules are currently designed to work with the MLton compiler using its C code generation. The `sml` files are concatenated according to the dependencies defined in the build process, but I haven't tested it in large projects, so your mileage may vary.
 
-`MLton` may generate multiple C files from the Standard ML source code. The current default value is set at `5`, as `bazel` requires a static build graph. If it is not enough, error would be thrown and the user has to increase the limit by setting the `max_files` attribute of the rules.
+`MLton` may generate multiple C files from the Standard ML source code. The current default value is set at `20`, as `bazel` requires a static build graph. If it is not enough, error would be thrown and the user has to increase the limit by setting the `max_files` attribute of the rules.
 
 These rules are built and tested for x64 Linux (my own computer). They may not work correctly on other operating systems or architectures.
 

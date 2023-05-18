@@ -85,11 +85,11 @@ sml_cc_src = rule(
         "_mlton": attr.label(default="@mlton_binary//:mlton_wrapper", executable=True, cfg="exec"),
         "srcs": attr.label_list(allow_files=True),
         "deps": attr.label_list(providers=[SmlLibraryInfo]),
-        "max_files": attr.int(default = 5),
+        "max_files": attr.int(default = 20),
     },
 )
 
-def sml_binary(name, srcs, max_files = 5, deps = [], **kwargs):
+def sml_binary(name, srcs, max_files = 20, deps = [], **kwargs):
     sml_cc_name = name + "_sml_cc"
 
     sml_cc_src(
@@ -110,7 +110,7 @@ def sml_binary(name, srcs, max_files = 5, deps = [], **kwargs):
         **kwargs,
     )
 
-def sml_test(name, srcs, max_files = 5, deps = [], **kwargs):
+def sml_test(name, srcs, max_files = 20, deps = [], **kwargs):
     sml_cc_name = name + "_sml_cc"
 
     sml_cc_src(
