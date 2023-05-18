@@ -132,7 +132,7 @@ def sml_test(name, srcs, max_files = 5, deps = [], **kwargs):
     )
 
 def repository():
-    http_archive(
+    native.http_archive(
         name = "mlton_binary",
         urls = ["https://github.com/MLton/mlton/releases/download/on-20210117-release/mlton-20210117-1.amd64-linux-glibc2.31.tgz"],
         strip_prefix = "mlton-20210117-1.amd64-linux-glibc2.31",
