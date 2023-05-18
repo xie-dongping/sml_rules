@@ -128,10 +128,6 @@ def sml_test(name, srcs, max_files = 5, deps = [], **kwargs):
     )
 
 def repository():
-    load(
-        "@bazel_tools//tools/build_defs/repo:http.bzl",
-        "http_archive"
-    )
     http_archive(
         name = "mlton_binary",
         urls = ["https://github.com/MLton/mlton/releases/download/on-20210117-release/mlton-20210117-1.amd64-linux-glibc2.31.tgz"],
