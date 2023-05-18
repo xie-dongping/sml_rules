@@ -59,7 +59,7 @@ def _sml_cc_src_impl(ctx):
                 if [ -f {base_name}.$i.c ]; then
                     file_count=$((file_count+1))
                     if [ $i -eq $((max_files-1)) ] && [ -f {base_name}.$((i+1)).c ]; then
-                        echo "Error: More than {max_files} C files generated, increase the limit." >&2
+                        echo "Error: More than {max_files} C files generated, increase the limit."
                         exit 1
                     fi
                     mv {base_name}.$i.c {base_path_c}.$i.c
@@ -68,7 +68,7 @@ def _sml_cc_src_impl(ctx):
                 fi
             done
             if [ $file_count -eq 0 ]; then
-                echo "Error: No C files were generated" >&2
+                echo "Error: No C files were generated"
                 exit 1
             fi
         """.format(srcs=" ".join([f.path for f in all_srcs]),
