@@ -138,71 +138,71 @@ def repository():
         strip_prefix = "mlton-20210117-1.amd64-linux-glibc2.31",
         sha256 = "749cb59d6baccd644143709be866105228d2b6dcd40c507a90b89c9b5e0f45d2",
         build_file_content = """
-    load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 
-    cc_import(
-        name = "libgdtoa",
-        static_library = "lib/mlton/targets/self/libgdtoa-pic.a",
-        visibility = ["//visibility:public"],
-    )
+cc_import(
+    name = "libgdtoa",
+    static_library = "lib/mlton/targets/self/libgdtoa-pic.a",
+    visibility = ["//visibility:public"],
+)
 
-    cc_import(
-        name = "libmlton",
-        static_library = "lib/mlton/targets/self/libmlton-pic.a",
-        visibility = ["//visibility:public"],
-    )
+cc_import(
+    name = "libmlton",
+    static_library = "lib/mlton/targets/self/libmlton-pic.a",
+    visibility = ["//visibility:public"],
+)
 
-    filegroup(
-        name = "all_headers",
-        srcs = glob([
-            "lib/mlton/include/**/*.h",
-            "lib/mlton/targets/self/include/**/*.h",
-            "lib/mlton/include/platform/**/*.h",
-        ]),
-    )
+filegroup(
+    name = "all_headers",
+    srcs = glob([
+        "lib/mlton/include/**/*.h",
+        "lib/mlton/targets/self/include/**/*.h",
+        "lib/mlton/include/platform/**/*.h",
+    ]),
+)
 
-    cc_library(
-        name = "mlton_c_deps",
-        hdrs = [":all_headers"],
-        includes = [
-            "lib/mlton/include/",
-            "lib/mlton/targets/self/include/",
-            "lib/mlton/include/platform/",
-        ],
-        deps = [
-            ":libgdtoa",
-            ":libmlton",
-        ],
-        visibility = ["//visibility:public"],
-    )
+cc_library(
+    name = "mlton_c_deps",
+    hdrs = [":all_headers"],
+    includes = [
+        "lib/mlton/include/",
+        "lib/mlton/targets/self/include/",
+        "lib/mlton/include/platform/",
+    ],
+    deps = [
+        ":libgdtoa",
+        ":libmlton",
+    ],
+    visibility = ["//visibility:public"],
+)
 
-    filegroup(
-        name = "mlton_files",
-        srcs = glob(["**"]),
-        visibility = ["//visibility:public"],
-    )
+filegroup(
+    name = "mlton_files",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
 
-    genrule(
-        name = "mlton_gen",
-        srcs = [":mlton_files"],
-        outs = ["mlton_gen.sh"],
-        cmd = \"""
-            echo '#!/bin/bash' > $@
-            echo 'BINARY=$${BASH_SOURCE[0]}.runfiles/mlton_binary/bin/mlton' >> $@
-            echo 'exec "$$BINARY" "$$@"'  >> $@
-        \""",
-        visibility = ["//visibility:public"],
-    )
+genrule(
+    name = "mlton_gen",
+    srcs = [":mlton_files"],
+    outs = ["mlton_gen.sh"],
+    cmd = \"""
+        echo '#!/bin/bash' > $@
+        echo 'BINARY=$${BASH_SOURCE[0]}.runfiles/mlton_binary/bin/mlton' >> $@
+        echo 'exec "$$BINARY" "$$@"'  >> $@
+    \""",
+    visibility = ["//visibility:public"],
+)
 
-    sh_binary(
-        name = "mlton_wrapper",
-        srcs = ["mlton_gen.sh"],
-        data = [
-            ":mlton_files",
-        ],
-        visibility = ["//visibility:public"],
-    )
-    """,
+sh_binary(
+    name = "mlton_wrapper",
+    srcs = ["mlton_gen.sh"],
+    data = [
+        ":mlton_files",
+    ],
+    visibility = ["//visibility:public"],
+)
+""",
 
     )
 
