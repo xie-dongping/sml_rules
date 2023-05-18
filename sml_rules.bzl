@@ -1,5 +1,9 @@
-SmlLibraryInfo = provider(fields=["srcs"])
+load(
+    "@bazel_tools//tools/build_defs/repo:http.bzl",
+    "http_archive"
+)
 
+SmlLibraryInfo = provider(fields=["srcs"])
 
 def _sml_library_impl(ctx):
     srcs = ctx.files.srcs
