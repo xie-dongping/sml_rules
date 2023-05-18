@@ -131,12 +131,16 @@ def sml_test(name, srcs, max_files = 5, deps = [], **kwargs):
         **kwargs,
     )
 
-def repository():
+def repository(
+    mlton_urls = ["https://github.com/MLton/mlton/releases/download/on-20210117-release/mlton-20210117-1.amd64-linux-glibc2.31.tgz"],
+    mlton_strip_prefix = "mlton-20210117-1.amd64-linux-glibc2.31",
+    mlton_sha256 = "749cb59d6baccd644143709be866105228d2b6dcd40c507a90b89c9b5e0f45d2",
+):
     http_archive(
         name = "mlton_binary",
-        urls = ["https://github.com/MLton/mlton/releases/download/on-20210117-release/mlton-20210117-1.amd64-linux-glibc2.31.tgz"],
-        strip_prefix = "mlton-20210117-1.amd64-linux-glibc2.31",
-        sha256 = "749cb59d6baccd644143709be866105228d2b6dcd40c507a90b89c9b5e0f45d2",
+        urls = mlton_urls,
+        strip_prefix = mlton_strip_prefix ,
+        sha256 = mlton_sha256,
         build_file_content = """
 load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 
