@@ -7,5 +7,5 @@ git_repository(
     # commit = "sha_hash", # please use pin to a certain commit
 )
 
-load("@sml_rules//:sml_rules.bzl", "repository")
-repository()
+load("@sml_rules//:rules.bzl", "repository")
+sml_repository()
