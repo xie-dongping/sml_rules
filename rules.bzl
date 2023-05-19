@@ -80,7 +80,7 @@ sml_cc_src = rule(
     },
 )
 
-def sml_binary(name, srcs, max_files = 20, deps = [], **kwargs):
+def sml_binary(name, srcs = [], max_files = 20, deps = [], **kwargs):
     sml_cc_name = name + "_sml_cc"
 
     sml_cc_src(
@@ -101,7 +101,7 @@ def sml_binary(name, srcs, max_files = 20, deps = [], **kwargs):
         **kwargs,
     )
 
-def sml_test(name, srcs, max_files = 20, deps = [], **kwargs):
+def sml_test(name, srcs = [], max_files = 20, deps = [], **kwargs):
     sml_cc_name = name + "_sml_cc"
 
     sml_cc_src(
