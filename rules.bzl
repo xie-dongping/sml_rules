@@ -22,11 +22,11 @@ def _sml_library_impl(ctx):
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
-        command = "set -e;{mlton} -stop tc {src} && touch {out}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path, out=error_log.path),
+        command = "{mlton} -codegen c -stop g {src}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path),
     )
 
-    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), _log = depset([error_log]))]
+    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
 
 sml_library = rule(
     implementation = _sml_library_impl,
