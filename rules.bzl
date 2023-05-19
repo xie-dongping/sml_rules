@@ -10,7 +10,7 @@ def _sml_library_impl(ctx):
     deps = depset(transitive=[dep[SmlLibraryInfo].srcs for dep in ctx.attr.deps])
     all_srcs = deps.to_list() + srcs
     temp_sml = ctx.actions.declare_file(ctx.label.name + "_temp.sml")
-    temp_object = ctx.actions.declare_file(ctx.label.name + "_temp.o")
+    error_log = ctx.actions.declare_file(ctx.label.name + "_error.log")
 
     ctx.actions.run(
         inputs = all_srcs,
@@ -20,9 +20,10 @@ def _sml_library_impl(ctx):
     )
     ctx.actions.run_shell(
         inputs = [temp_sml],
-        outputs = [temp_object],
+        outputs = [error_log],
         tools = [ctx.executable._mlton],
-        command = "{mlton} -stop tc {src}".format(mlton=ctx.executable._mlton.path, src=temp_sml.path),
+        command = "{mlton} -stop tc {src} 2> {error_log}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path, error_log=error_log.path),
     )
 
     return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
