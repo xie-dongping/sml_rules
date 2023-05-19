@@ -30,7 +30,7 @@ sml_library = rule(
 
 def _sml_cc_src_impl(ctx):
     srcs = ctx.files.srcs
-    deps = depset(transitive=[dep[SmlLibraryInfo].srcs for dep in ctx.attr.deps])
+    deps = depset(transitive=[dep[SmlLibraryInfo].srcs for dep in ctx.attr.deps], order="topological")
     all_srcs = deps.to_list() + srcs
     temp_sml = ctx.actions.declare_file(ctx.label.name + "_temp.sml")
     output_c_files = [ctx.actions.declare_file(ctx.label.name + ".{}.c".format(i)) for i in range(ctx.attr.max_files)]
