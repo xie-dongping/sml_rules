@@ -22,8 +22,9 @@ def _sml_library_impl(ctx):
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
-        command = "{mlton} -stop tc {src} || (echo 'Error: MLton failed' >&2; exit 1)".format(
+        command = "set -e;{mlton} -stop tc {src}".format(
             mlton=ctx.executable._mlton.path, src=temp_sml.path),
+        shell = "/bin/bash",
     )
 
     return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
