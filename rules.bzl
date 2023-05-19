@@ -22,7 +22,6 @@ def _sml_library_impl(ctx):
 sml_library = rule(
     implementation = _sml_library_impl,
     attrs = {
-        "_mlton": attr.label(default = "@mlton_binary//:mlton_wrapper", executable=True, cfg="exec"),
         "srcs": attr.label_list(allow_files=True),
         "deps": attr.label_list(providers=[SmlLibraryInfo]),
     },
