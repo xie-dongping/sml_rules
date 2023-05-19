@@ -22,8 +22,8 @@ def _sml_library_impl(ctx):
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
-        command = "{mlton} -stop tc {src} 2> {error_log}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path, error_log=error_log.path),
+        command = "set -e;{mlton} -stop tc {src}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path),
     )
 
     return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
