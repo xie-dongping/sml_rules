@@ -10,7 +10,6 @@ def _sml_library_impl(ctx):
     deps = depset(transitive=[dep[SmlLibraryInfo].srcs for dep in ctx.attr.deps])
     all_srcs = deps.to_list() + srcs
     temp_sml = ctx.actions.declare_file(ctx.label.name + "_temp.sml")
-    dummy_file = ctx.actions.declare_file(ctx.label.name + ".dummy")
 
     ctx.actions.run(
         inputs = all_srcs,
@@ -18,14 +17,6 @@ def _sml_library_impl(ctx):
         executable = "bash",
         arguments = ["-c", "cat {} > {}".format(" ".join([f.path for f in all_srcs]), temp_sml.path)],
     )
-    ctx.actions.run_shell(
-        inputs = [temp_sml],
-        outputs = [dummy_file],
-        tools = [ctx.executable._mlton],
-        command = "{mlton} -stop tc {src}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path),
-    )
-
     return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
 
 sml_library = rule(
