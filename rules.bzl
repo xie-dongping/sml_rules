@@ -26,7 +26,7 @@ def _sml_library_impl(ctx):
             mlton=ctx.executable._mlton.path, src=temp_sml.path),
     )
 
-    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
+    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), _log=error_log.path)]
 
 sml_library = rule(
     implementation = _sml_library_impl,
