@@ -3,7 +3,7 @@ load(
     "http_archive"
 )
 
-SmlLibraryInfo = provider(fields=["srcs"])
+SmlLibraryInfo = provider(fields=["srcs", "_log"])
 
 def _sml_library_impl(ctx):
     srcs = ctx.files.srcs
@@ -18,16 +18,15 @@ def _sml_library_impl(ctx):
         executable = "bash",
         arguments = ["-c", "cat {} > {}".format(" ".join([f.path for f in all_srcs]), temp_sml.path)],
     )
-    ctx.actions.run(
+    ctx.actions.run_shell(
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
-        executable = "bash",
-        arguments = ["-c", "{mlton} -stop tc {src}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path)],
+        command = "set -e;{mlton} -stop tc {src} && touch {out}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path, out=error_log.path),
     )
 
-    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
+    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), _log = depset([error_log]))]
 
 sml_library = rule(
     implementation = _sml_library_impl,
