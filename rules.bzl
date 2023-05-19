@@ -10,7 +10,7 @@ def _sml_library_impl(ctx):
     deps = depset(transitive=[dep[SmlLibraryInfo].srcs for dep in ctx.attr.deps])
     all_srcs = deps.to_list() + srcs
     temp_sml = ctx.actions.declare_file(ctx.label.name + "_temp.sml")
-    error_log = ctx.actions.declare_file(ctx.label.name + "_error.log")
+    dummy_file = ctx.actions.declare_file(ctx.label.name + ".dummy")
 
     ctx.actions.run(
         inputs = all_srcs,
@@ -20,13 +20,13 @@ def _sml_library_impl(ctx):
     )
     ctx.actions.run_shell(
         inputs = [temp_sml],
-        outputs = [error_log],
+        outputs = [dummy_file],
         tools = [ctx.executable._mlton],
-        command = "{mlton} -codegen c -stop g {src} && touch {out}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path, out=error_log.path),
+        command = "{mlton} -stop tc {src}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path),
     )
 
-    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), files=depset([error_log]))]
+    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs))]
 
 sml_library = rule(
     implementation = _sml_library_impl,
