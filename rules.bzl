@@ -18,7 +18,7 @@ def _sml_library_impl(ctx):
         executable = "bash",
         arguments = ["-c", "cat {} > {}".format(" ".join([f.path for f in all_srcs]), temp_sml.path)],
     )
-    ctx.actions.run_shell(
+    ctx.actions.run(
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
