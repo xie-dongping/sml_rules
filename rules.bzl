@@ -3,7 +3,7 @@ load(
     "http_archive"
 )
 
-SmlLibraryInfo = provider(fields=["srcs", "_log"])
+SmlLibraryInfo = provider(fields=["srcs", "files"])
 
 def _sml_library_impl(ctx):
     srcs = ctx.files.srcs
@@ -22,11 +22,11 @@ def _sml_library_impl(ctx):
         inputs = [temp_sml],
         outputs = [error_log],
         tools = [ctx.executable._mlton],
-        command = "{mlton} -codegen c -stop g {src}".format(
-            mlton=ctx.executable._mlton.path, src=temp_sml.path),
+        command = "{mlton} -codegen c -stop g {src} && touch {out}".format(
+            mlton=ctx.executable._mlton.path, src=temp_sml.path, out=error_log.path),
     )
 
-    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), _log=error_log.path)]
+    return [SmlLibraryInfo(srcs = depset(srcs + all_srcs), files=depset([error_log]))]
 
 sml_library = rule(
     implementation = _sml_library_impl,
