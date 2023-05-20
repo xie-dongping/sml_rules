@@ -1,7 +1,7 @@
 Bazel SML Rules
 ===============
 
-Bazel SML rules provide the necessary rules to build and test SML (Standard ML) applications using Bazel.
+[Bazel](https://bazel.build/) SML rules provide the necessary rules to build and test SML (Standard ML) applications using Bazel.
 
 ## Introduction
 
@@ -34,7 +34,7 @@ Please note that I am developing this project for my own personal needs and for 
 
 ## Usage
 
-To use these rules, include the following in your WORKSPACE file:
+To use these rules (provided that bazel/[bazelisk](https://github.com/bazelbuild/bazelisk/releases) is installed), include the following in your WORKSPACE file:
 
 ```python
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
@@ -66,6 +66,15 @@ sml_binary(
     srcs = ["main.sml"],
     deps = [":mylib"],
 )
+
+sml_test(
+    name = "mytest",
+    srcs = ["mylib.test.sml"],
+    deps = [":mylib"],
+)
 ```
+
+Then you may test your code with `bazel test ...` (to test all available test targets) or `bazel test //:mytest`.
+
 
 An example is also available in `examples` folder.
