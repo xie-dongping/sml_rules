@@ -42,8 +42,8 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 git_repository(
     name = "sml_rules",
     remote = "https://github.com/xie-dongping/sml_rules.git",
-    branch = "main", # don't use branch, use `commit` to ensure hermetic build
-    # commit = "sha_hash", # please use pin to a certain commit
+    branch = "main", # don't specify the `branch`, use `commit` to ensure hermetic build
+    # commit = "sha_hash", # please use the `commit` field to pin a certain commit
 )
 
 load("@sml_rules//:rules.bzl", "sml_repository")
